@@ -995,18 +995,19 @@ class XmlBorehole:
         s += (
             f"#FILEDATE= {self.date.year}, {self.date.month:02d}, {self.date.day:02d}\n"
         )
-        s += "#PROJECTID= LeveeLogic\n"
+        s += "#PROJECTID= HWBP PanWes\n"
         s += "#COLUMN= 2\n"
         s += "#COLUMNINFO= 1, m, Laag van, 1\n"
         s += "#COLUMNINFO= 2, m, Laag tot, 2\n"
         s += "#COMPANYID= -, -, 31\n"
         s += "#DATAFORMAT= ASCII\n"
-        s += "#COLUMNSEPARATOR= ,\n"
+        s += "#COLUMNSEPARATOR= ;\n"
         s += f"#LASTSCAN= {self.soillayers['veld'].shape[0]}\n"
         s += f"#XYID= 28992, {self.easting}, {self.northing}\n"
         s += f"#ZID= 31000, {self.groundlevel}\n"
         s += "#PROCEDURECODE= GEF-BORE-Report, 1, 0, 0, -\n"
         s += f"#TESTID= {self.testid}\n"
+        s += f"#MEASUREMENTTEXT= 16, {self.date.year}-{self.date.month:02d}-{self.date.day:02d}, datum boring\n"
         s += "#REPORTCODE= GEF-BORE-Report, 1, 0, 0, -\n"
         s += "#OS= DOS\n"
         s += "#LANGUAGE= NL\n"
@@ -1016,7 +1017,23 @@ class XmlBorehole:
             top = row["upper_NAP"]
             bot = row["lower_NAP"]
             soilname = row["soilName"]
-            s += f"{top:.2f},{bot:.2f},{soilname}\n"
+            try:
+                sand = row["sandMedianClass"]
+            except:
+                sand = ''
+            
+            try:
+                organic = row["organicMatterContentClass"]
+            except:
+                organic = ''
+
+            if type(sand)!=str and np.isnan(sand):
+                sand = ""
+            
+            if type(organic)!=str and np.isnan(organic):
+                organic = ""
+
+            s += f"{top:.2f};{bot:.2f};{soilname};{sand};;{organic};;\n"
 
         return s
 
