@@ -879,12 +879,14 @@ class XmlBorehole:
         self.analyses = []
         self.metadata = {}
         self.descriptionquality = None
+        self.filename = None
 
     def load_xml(self, xmlFile):
         # lees een boring in vanuit een BRO XML
         tree = ElementTree()
         tree.parse(xmlFile)
         root = tree.getroot()
+        self.filename = xmlFile
 
         for element in root.iter():
 
@@ -1004,7 +1006,7 @@ class XmlBorehole:
         s += f"#XYID= 28992, {self.easting}, {self.northing}\n"
         s += f"#ZID= 31000, {self.groundlevel}\n"
         s += "#PROCEDURECODE= GEF-BORE-Report, 1, 0, 0, -\n"
-        s += f"#TESTID= {self.testid}\n"
+        s += f"#TESTID= {Path(self.filename).stem}\n"
         s += f"#MEASUREMENTTEXT= 16, {self.date.year}-{self.date.month:02d}-{self.date.day:02d}, datum boring\n"
         s += "#REPORTCODE= GEF-BORE-Report, 1, 0, 0, -\n"
         s += "#OS= DOS\n"
