@@ -1014,8 +1014,8 @@ class XmlBorehole:
         s += "#EOH=\n"
 
         for _, row in self.soillayers["veld"].iterrows():
-            top = row["upper_NAP"]
-            bot = row["lower_NAP"]
+            top = self.groundlevel - row["upper_NAP"]
+            bot = self.groundlevel - row["lower_NAP"]
             soilname = row["soilName"]
             try:
                 sand = row["sandMedianClass"]
